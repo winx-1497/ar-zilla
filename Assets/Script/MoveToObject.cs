@@ -17,23 +17,19 @@ public class MoveToObject : MonoBehaviour
         if (Body != null)
         {
             initialCameraPosition = Body.transform.position;
-            isBulletMoving = true; // Start moving the bullet
+            isBulletMoving = true;
         }
     }
 
     void Update()
     {
-        // Check if the Bullet is not null before attempting to move
         if (Bullet != null && isBulletMoving)
         {
-            // Move the Bullet towards the initial position of the camera over time
             Bullet.transform.position = Vector3.MoveTowards(Bullet.transform.position, initialCameraPosition, speed * Time.deltaTime);
 
-            // Check if the bullet has reached the initial camera position
             if (Vector3.Distance(Bullet.transform.position, initialCameraPosition) < 0.01f)
             {
-                // Stop moving the bullet without destroying it
-                isBulletMoving = false;
+               isBulletMoving = false;
             }
         }
     }
@@ -50,13 +46,12 @@ public class MoveToObject : MonoBehaviour
                 HealthScript healthScript = Body.GetComponent<HealthScript>();
                 if (healthScript != null)
                 {
-                    healthScript.TakeDamage(5); // Assuming TakeDamage function exists in HealthScript
+                    healthScript.TakeDamage(5);
                     Debug.Log("Health reduced! Current Health: " + healthScript.GetCurrentHealth());
                 }
             }
 
             Destroy(Bullet);
-            //isBulletMoving = false;
         }
     }
 }
