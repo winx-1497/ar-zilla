@@ -1,2 +1,2 @@
 # ar-zilla
- Helicopter AR game for Game programming 2
+ AR shooter game for Game programming 2
