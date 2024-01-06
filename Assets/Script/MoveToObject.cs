@@ -55,8 +55,8 @@ public class MoveToObject : MonoBehaviour
                 }
             }
 
-            // Stop moving the bullet without destroying it
             Destroy(Bullet);
+            //isBulletMoving = false;
         }
     }
 }

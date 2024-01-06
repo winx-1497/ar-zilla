@@ -6,9 +6,10 @@ public class RandomObjectCircle : MonoBehaviour
 {
     public GameObject[] myObjects;
     public GameObject plane;
-    public float spawnDelay = 1.0f;
+    public float spawnDelay = 2.0f;
     public int numPoints = 6;
     public GameObject player;
+    public LayerMask enemyLayer;
 
     // public Transform circleCenter;  // Reference to the center of the circle
     public float circleRadius = 5f;  // Radius of the circle
@@ -30,7 +31,7 @@ public class RandomObjectCircle : MonoBehaviour
             RaycastHit hit;
 
             // Perform the raycast
-            if (Physics.Raycast(ray, out hit))
+            if (Physics.Raycast(ray, out hit, Mathf.Infinity, enemyLayer))
             {
                 // Check if an object was hit
                 if (hit.transform != null)
@@ -39,7 +40,7 @@ public class RandomObjectCircle : MonoBehaviour
                     objectPositions.Remove(hit.transform.position);
 
                     // Destroy the hit object
-                    Destroy(hit.transform.gameObject);
+                    Destroy(hit.transform.parent.gameObject);
                 }
             }
         }
@@ -77,7 +78,7 @@ public class RandomObjectCircle : MonoBehaviour
         float z = radius * Mathf.Sin(angle);
 
         // Create the spawn position vector
-        Vector3 randomSpawnPos = new Vector3(x, 0, z);
+        Vector3 randomSpawnPos = new Vector3(x, -5, z);
 
         // Check if the position is already occupied
         if (!objectPositions.ContainsKey(randomSpawnPos))
@@ -88,8 +89,8 @@ public class RandomObjectCircle : MonoBehaviour
             // Instantiate the object at the calculated position
             GameObject newObj = Instantiate(myObjects[randomObjectIndex], randomSpawnPos, Quaternion.identity);
             newObj.GetComponentInChildren<BulletSpawner>().body = player;
-            // Make the object face the camera
-            newObj.transform.LookAt(Camera.main.transform);
+            // Make the object face the player
+            newObj.transform.LookAt(player.transform);
 
             // Add the new object's position to the dictionary
             objectPositions.Add(randomSpawnPos, newObj);
